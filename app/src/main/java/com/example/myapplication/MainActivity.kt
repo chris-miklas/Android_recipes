@@ -12,81 +12,24 @@ import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
+import android.content.Intent
 
-
+// This activity starts when the app is opened. It contains 2 buttons - Search and Browse.
+// Search allows for custom searching where the user can specify which ingredients are necessary and
+// which are forbidden. The Browse button allows the user to just browse all the recipes.
 class MainActivity : AppCompatActivity() {
-
-    var volleyRequest: RequestQueue? = null
-    private lateinit var recipeAdapter: RecipeAdapter
-    val BASE_URL = "http://www.recipepuppy.com/api/?i="
-    val QUERY: String = "&q="
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         var url: String? = null
 
-        recipeAdapter = RecipeAdapter(mutableListOf())
-        rvRecipeItems.adapter = recipeAdapter
-        rvRecipeItems.layoutManager = LinearLayoutManager(this)
-
         btnSearch.setOnClickListener{
-            val ingredients = etIngredients.text.toString()
-            if(ingredients.isNotEmpty()){
-
-                //http://www.recipepuppy.com/?i=carrot,%2Bchicken,-potato
-
-                url = BASE_URL + ingredients
-
-                volleyRequest = Volley.newRequestQueue(this)
-                getRecipe(url.toString())
-
-                etIngredients.text.clear()
-            }
+            val intent = Intent(this, SearchActivity::class.java);
+            startActivity(intent);
         }
-        btnDelete.setOnClickListener{
-            recipeAdapter.deleteRecipes()
+        btnBrowse.setOnClickListener{
+
         }
-    }
-    private fun getRecipe(url: String): Unit {
-        val recipeRequest = JsonObjectRequest(Request.Method.GET, url, null,
-            { response: JSONObject ->
-                try {
-                    val resultArray = response.getJSONArray("results")
-                    for (i in 0 until resultArray.length()) {
-
-                        var recipeObj = resultArray.getJSONObject(i)
-                        var title = recipeObj.getString("title")
-                        var link = recipeObj.getString("href")
-                        var thumbnail = recipeObj.getString("thumbnail")
-                        var ingredients = recipeObj.getString("ingredients")
-
-                        Log.d("RESULTS ===>", title)
-                        var recipe = Recipe()
-                        recipe.title = title
-                        recipe.link = link
-                        recipe.thumbnail = thumbnail
-                        recipe.ingredients = "Ingredients: $ingredients"
-
-                        recipeAdapter.addRecipe(recipe)
-
-                    }
-                    recipeAdapter!!.notifyDataSetChanged()
-
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-
-            },
-            { error: VolleyError? ->
-                try {
-                    Log.d("Error", error.toString())
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-
-            })
-        volleyRequest!!.add(recipeRequest)
     }
 }

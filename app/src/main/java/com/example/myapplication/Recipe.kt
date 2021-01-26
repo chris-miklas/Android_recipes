@@ -12,6 +12,5 @@ class Recipe() {
         this.link = link
         this.ingredients = ingredients
         this.thumbnail = thumbnail
-
     }
 }
