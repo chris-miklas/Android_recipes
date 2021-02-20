@@ -27,8 +27,8 @@ class RecipeAdapter(
         )
     }
 
-    fun addRecipe(todo: Recipe){
-        recipes.add(todo)
+    fun addRecipe(recipe: Recipe){
+        recipes.add(recipe)
         notifyItemInserted(recipes.size - 1)
     }
 
@@ -39,15 +39,16 @@ class RecipeAdapter(
 
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-        val curTodo = recipes[position]
+        val curRecipe = recipes[position]
         holder.itemView.apply {
-            tvRecipeTitle.text = curTodo.title
+            tvRecipeTitle.text = curRecipe.title
         }
         holder.itemView.setOnClickListener(View.OnClickListener { v ->
             val intent = Intent(holder.itemView.context, RecipeActivity::class.java)
-            intent.putExtra("title", curTodo.title)
-            intent.putExtra("link", curTodo.link)
-            intent.putExtra("ingredients", curTodo.ingredients)
+            intent.putExtra("title", curRecipe.title)
+            intent.putExtra("link", curRecipe.link)
+            intent.putExtra("ingredients", curRecipe.ingredients)
+            intent.putExtra("thumbnail",curRecipe.thumbnail)
             holder.itemView.context.startActivity(intent)
         })
     }

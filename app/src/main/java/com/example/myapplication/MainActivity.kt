@@ -29,6 +29,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent);
         }
         btnBrowse.setOnClickListener{
+            val intent = Intent(this, RecipeListActivity::class.java)
+            intent.putExtra("url", "http://www.recipepuppy.com/api/?i=")
+            startActivity(intent)
 
         }
     }

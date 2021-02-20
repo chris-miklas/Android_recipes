@@ -12,6 +12,8 @@ import org.json.JSONException
 import org.json.JSONObject
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.recipe_list.*
+import kotlinx.android.synthetic.main.recipe_list.btnNext
+import kotlinx.android.synthetic.main.search_activity.*
 
 // Fetches and shows a list of recipes based on the url passed to it by SearchActivity.
 class RecipeListActivity : AppCompatActivity() {
@@ -27,7 +29,18 @@ class RecipeListActivity : AppCompatActivity() {
         rvRecipeItems.layoutManager = LinearLayoutManager(this)
         volleyRequest = Volley.newRequestQueue(this)
 
-        getRecipe(intent.getStringExtra("url"))
+        var page = 1
+        var url = intent.getStringExtra("url")
+
+        btnNext.setOnClickListener{
+            page += 1
+        }
+        btnPrev.setOnClickListener{
+            if(page > 1) page -= 1
+        }
+
+        url += "?p=$page"
+        getRecipe(url)
     }
 
     private fun getRecipe(url: String?): Unit {
