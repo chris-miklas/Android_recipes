@@ -13,11 +13,12 @@ import org.json.JSONObject
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.recipe_list.*
 import kotlinx.android.synthetic.main.recipe_list.btnNext
-import kotlinx.android.synthetic.main.search_activity.*
+
 
 // Fetches and shows a list of recipes based on the url passed to it by SearchActivity.
 class RecipeListActivity : AppCompatActivity() {
     var volleyRequest: RequestQueue? = null
+    var lastPage = false
     private lateinit var recipeAdapter: RecipeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,34 +31,44 @@ class RecipeListActivity : AppCompatActivity() {
         volleyRequest = Volley.newRequestQueue(this)
 
         var page = 1
-        var url = intent.getStringExtra("url")
+        val url = intent.getStringExtra("url")
 
         btnNext.setOnClickListener{
-            page += 1
+            if(!lastPage){
+                page += 1
+                recipeAdapter.deleteRecipes()
+                getRecipe("$url&p=$page")
+            }
+
         }
         btnPrev.setOnClickListener{
-            if(page > 1) page -= 1
+            if(page > 1) {
+                page -= 1
+                recipeAdapter.deleteRecipes()
+                getRecipe("$url&p=$page")
+            }
+
         }
 
-        url += "?p=$page"
-        getRecipe(url)
+        getRecipe("$url&p=$page")
     }
 
-    private fun getRecipe(url: String?): Unit {
+    private fun getRecipe(url: String?){
         val recipeRequest = JsonObjectRequest(Request.Method.GET, url, null,
                 { response: JSONObject ->
                     try {
                         val resultArray = response.getJSONArray("results")
+                        lastPage = resultArray.length() == 0
                         for (i in 0 until resultArray.length()) {
 
-                            var recipeObj = resultArray.getJSONObject(i)
-                            var title = recipeObj.getString("title")
-                            var link = recipeObj.getString("href")
-                            var thumbnail = recipeObj.getString("thumbnail")
-                            var ingredients = recipeObj.getString("ingredients")
+                            val recipeObj = resultArray.getJSONObject(i)
+                            val title = recipeObj.getString("title")
+                            val link = recipeObj.getString("href")
+                            val thumbnail = recipeObj.getString("thumbnail")
+                            val ingredients = recipeObj.getString("ingredients")
 
                             Log.d("RESULTS ===>", title)
-                            var recipe = Recipe()
+                            val recipe = Recipe()
                             recipe.title = title
                             recipe.link = link
                             recipe.thumbnail = thumbnail
@@ -66,7 +77,7 @@ class RecipeListActivity : AppCompatActivity() {
                             recipeAdapter.addRecipe(recipe)
 
                         }
-                        recipeAdapter!!.notifyDataSetChanged()
+                        recipeAdapter.notifyDataSetChanged()
 
                     } catch (e: JSONException) {
                         e.printStackTrace()

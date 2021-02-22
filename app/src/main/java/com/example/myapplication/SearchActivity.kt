@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.search_activity.*
 // with the given parameters inserted which it then passes to RecipeListActivity.
 class SearchActivity : AppCompatActivity() {
     val BASE_URL = "http://www.recipepuppy.com/api/?i="
-    val QUERY: String = "&q="
+    //val QUERY: String = "&q="
     var ingredients: String = ""
     var prefix: String = ""
 
@@ -21,13 +21,13 @@ class SearchActivity : AppCompatActivity() {
         btnNext.setOnClickListener{
             val newIngredients = etIngredients.text.toString()
             if(newIngredients.isNotEmpty()) {
-                if (prefix.equals("")) {
+                if (prefix == "") {
                     prefixIngredients(newIngredients)
                     etIngredients.text.clear()
                     prefix = "%2B"
                     stepText.text = "Necessary ingredients"
                 }
-                else if (prefix.equals("%2B")) {
+                else if (prefix == "%2B") {
                     prefixIngredients(newIngredients)
                     etIngredients.text.clear()
                     prefix = "-"
@@ -43,6 +43,10 @@ class SearchActivity : AppCompatActivity() {
                     intent.putExtra("url", BASE_URL + ingredients)
                     startActivity(intent)
                 }
+            }else{
+                val intent = Intent(this, RecipeListActivity::class.java)
+                intent.putExtra("url", BASE_URL + ingredients)
+                startActivity(intent)
             }
         }
     }
@@ -57,8 +61,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun prefixIngredients(newIngredients: String) {
         newIngredients.split(',', ' ').forEach {
-            if (!it.equals("")) {
-                ingredients += prefix + "" + it + ","
+            if (it != "") {
+                ingredients += "$prefix$it,"
             }
         }
     }
