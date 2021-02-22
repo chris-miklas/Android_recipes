@@ -10,7 +10,7 @@
         android:id="@+id/rvRecipeItems"
         android:layout_width="370dp"
         android:layout_height="633dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnPrev"
+        app:layout_constraintBottom_toTopOf="@+id/btnPrevPage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,7 +19,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <Button
-        android:id="@+id/btnPrev"
+        android:id="@+id/btnPrevPage"
         android:layout_width="150dp"
         android:layout_height="68dp"
         android:layout_marginStart="36dp"
@@ -29,12 +29,12 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btnNext"
+        android:id="@+id/btnNextPage"
         android:layout_width="150dp"
         android:layout_height="68dp"
         android:text="NEXT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.56"
-        app:layout_constraintStart_toEndOf="@+id/btnPrev" />
+        app:layout_constraintStart_toEndOf="@+id/btnPrevPage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

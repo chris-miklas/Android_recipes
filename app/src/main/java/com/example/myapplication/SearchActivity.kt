@@ -5,11 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.search_activity.*
 
-// This activity allows the user to enter search parameters and then puts together a url
-// with the given parameters inserted which it then passes to RecipeListActivity.
+// This activity allows the user to enter ingredients and then puts together a url
+// with the given ingredients inserted which it then passes to RecipeListActivity.
 class SearchActivity : AppCompatActivity() {
     val BASE_URL = "http://www.recipepuppy.com/api/?i="
-    //val QUERY: String = "&q="
     var ingredients: String = ""
     var prefix: String = ""
 
@@ -20,30 +19,25 @@ class SearchActivity : AppCompatActivity() {
 
         btnNext.setOnClickListener{
             val newIngredients = etIngredients.text.toString()
-            if(newIngredients.isNotEmpty()) {
-                if (prefix == "") {
-                    prefixIngredients(newIngredients)
-                    etIngredients.text.clear()
-                    prefix = "%2B"
-                    stepText.text = "Necessary ingredients"
-                }
-                else if (prefix == "%2B") {
-                    prefixIngredients(newIngredients)
-                    etIngredients.text.clear()
-                    prefix = "-"
-                    stepText.text = "Forbidden ingredients"
-                    btnNext.text = "Search"
-                }
-                else {
-                    prefixIngredients(newIngredients)
-                    etIngredients.text.clear()
-                    ingredients = ingredients.dropLast(1)
 
-                    val intent = Intent(this, RecipeListActivity::class.java)
-                    intent.putExtra("url", BASE_URL + ingredients)
-                    startActivity(intent)
-                }
-            }else{
+            if (prefix == "") {
+                prefixIngredients(newIngredients)
+                etIngredients.text.clear()
+                prefix = "%2B"
+                stepText.text = "Necessary ingredients"
+            }
+            else if (prefix == "%2B") {
+                prefixIngredients(newIngredients)
+                etIngredients.text.clear()
+                prefix = "-"
+                stepText.text = "Forbidden ingredients"
+                btnNext.text = "Search"
+            }
+            else {
+                prefixIngredients(newIngredients)
+                etIngredients.text.clear()
+                ingredients = ingredients.dropLast(1)
+
                 val intent = Intent(this, RecipeListActivity::class.java)
                 intent.putExtra("url", BASE_URL + ingredients)
                 startActivity(intent)
@@ -51,6 +45,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    // Reset the activity when another activity comes to the front.
     override fun onPause() {
         super.onPause()
         ingredients = ""

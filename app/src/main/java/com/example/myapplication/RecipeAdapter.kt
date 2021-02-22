@@ -5,12 +5,10 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_recipe.view.*
-import androidx.appcompat.app.AppCompatActivity
 
-
+// A class used to display a list of recipes.
 class RecipeAdapter(
     private val recipes: MutableList<Recipe>
 ) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
@@ -36,7 +34,6 @@ class RecipeAdapter(
         recipes.clear()
         notifyDataSetChanged()
     }
-
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val curRecipe = recipes[position]

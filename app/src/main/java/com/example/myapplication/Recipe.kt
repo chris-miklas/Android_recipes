@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+// A class that holds info about a single recipe.
 class Recipe() {
     var title: String? = null
     var link: String? = null

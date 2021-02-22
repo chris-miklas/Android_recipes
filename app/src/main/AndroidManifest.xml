@@ -20,6 +20,8 @@
         <activity android:name=".SearchActivity"/>
         <activity android:name=".RecipeListActivity"/>
         <activity android:name=".RecipeActivity"/>
+        <activity android:name=".SearchChoiceActivity"/>
+        <activity android:name=".SearchNameActivity"/>
     </application>
 
 </manifest>

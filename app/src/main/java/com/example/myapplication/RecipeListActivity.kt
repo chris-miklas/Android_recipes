@@ -12,10 +12,10 @@ import org.json.JSONException
 import org.json.JSONObject
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.recipe_list.*
-import kotlinx.android.synthetic.main.recipe_list.btnNext
+import kotlinx.android.synthetic.main.recipe_list.btnNextPage
 
 
-// Fetches and shows a list of recipes based on the url passed to it by SearchActivity.
+// Fetches and shows a list of recipes based on the url passed to it by another activity.
 class RecipeListActivity : AppCompatActivity() {
     var volleyRequest: RequestQueue? = null
     var lastPage = false
@@ -33,7 +33,7 @@ class RecipeListActivity : AppCompatActivity() {
         var page = 1
         val url = intent.getStringExtra("url")
 
-        btnNext.setOnClickListener{
+        btnNextPage.setOnClickListener{
             if(!lastPage){
                 page += 1
                 recipeAdapter.deleteRecipes()
@@ -41,7 +41,7 @@ class RecipeListActivity : AppCompatActivity() {
             }
 
         }
-        btnPrev.setOnClickListener{
+        btnPrevPage.setOnClickListener{
             if(page > 1) {
                 page -= 1
                 recipeAdapter.deleteRecipes()
